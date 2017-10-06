@@ -131,31 +131,24 @@ io.on("connection", function(socket) {
   socket.on("disconnect", function() {
     // recibir todos los driverPos, revisar si su id es igual a alguna
     console.log("Se desconecto: " + socket.id);
-    const drivers = driverPosModel.find({}, "_id socketId", (err, drivers) => {
-      if (err) {
-        console.log("Error: " + err);
-      }
-      for (let i = 0; i < drivers.length; i++) {
-        if (socket.id === drivers[i].socketId) {
-          // este cliente se salio
-          const deleted = driverPosModel.findOneAndRemove(
-            { _id: drivers[i]._id },
-            (err, res) => {
-              if (err) {
-                console.log("Error: " + err);
-              }
-              return true;
-            }
-          );
-          return;
+    const deleted = driverPosModel.findOneAndRemove(
+      { socketId: socket.id },
+      (err, res) => {
+        if (err) {
+          console.log("Error: " + err);
         }
+        return true;
       }
-    });
+    );
+    if (deleted) {
+      console.log("Socket eliminado correctamente");
+    }
   });
+
   socket.on("UPDATE_DRIVER_POS", function(driver) {
     const response = driverPosModel.update(
       { socketId: driver.socketId },
-      { $set: { location: driver.location } },
+      { $set: { coordinate: driver.coordinate } },
       (err, res) => {
         if (err) {
           console.log("Error: " + err);
@@ -164,9 +157,10 @@ io.on("connection", function(socket) {
       }
     );
   });
+  /*
   socket.on("chat message", function(msg) {
     io.emit("chat message", msg);
-  });
+  });*/
 });
 
 mongoose.connect(process.env.BD, { useMongoClient: true }, () => {
