@@ -9,8 +9,11 @@ const ratingModel = require("../models/rating");
 const resolvers = {
   Query: {
     userExists: (obj, args) => {
-      return clientModel.findOne({ _id: args.id }, (error, exists) => {
-        return exists != null && !error ? true : false;
+      return clientModel.findOne({ login: args.login }, (error, client) => {
+        if (err) {
+          console.log("Error: " + err);
+        }
+        return client;
       });
     },
     getDriver: (obj, args) => {
@@ -77,7 +80,7 @@ const resolvers = {
     },
     getClientRides: (obj, args) => {
       return rideModel.find(
-        { clientId: args.id },
+        { login: args.login },
         "_id amount driverName clientName startLocation destination rideState cancelReason rating",
         (err, rides) => {
           if (err) {

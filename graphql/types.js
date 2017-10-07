@@ -1,6 +1,7 @@
 const typeDefs = `
   type Client {
     _id: String
+    login: String!
     clientName: String!
     location: Location
     phone: String
@@ -16,13 +17,13 @@ const typeDefs = `
   
   type Driver {
     _id: String
+    login: String!
     driverName: String!
     location: Location!
     phone: String!
     email: String!
     password: String!
     earnings: String!
-    login: String
     payment: String!
     rating: Float!
     allRatings: [Float]!
@@ -88,6 +89,7 @@ const typeDefs = `
 
   input ClientInput {
     _id: String
+    login: String!
     avatar: String!
     clientName: String!
     phone: String!
@@ -98,18 +100,17 @@ const typeDefs = `
     location: LocationInput
     allRatings: [Float]
     password: String
-    login: String
   }
 
   input DriverInput {
     _id: String
+    login: String!
     driverName: String!
     location: LocationInput!
     phone: String!
     email: String!
     password: String!
     earnings: String!
-    login: String
     payment: String!
     rating: Float!
     allRatings: [Float]!
@@ -201,7 +202,7 @@ const typeDefs = `
     getClientRides(id: String!): [Ride]
     getRating(name: String!): [Rating]
     getRatings(filter: String!): [Rating]
-    userExists(id: String!): Boolean
+    userExists(login: String!): Client
   }
 
   type Mutation {

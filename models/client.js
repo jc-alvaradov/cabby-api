@@ -5,6 +5,10 @@ const clientSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.String,
     required: true
   },
+  login: {
+    type: mongoose.Schema.Types.String,
+    required: true
+  },
   location: {
     type: mongoose.Schema.Types.String,
     required: false
