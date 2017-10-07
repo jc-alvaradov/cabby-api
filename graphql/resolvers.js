@@ -13,7 +13,7 @@ const resolvers = {
         if (error) {
           console.log("Error: " + error);
         }
-        return client;
+        return client != null ? true : false;
       });
     },
     getDriver: (obj, args) => {
