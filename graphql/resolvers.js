@@ -10,8 +10,8 @@ const resolvers = {
   Query: {
     userExists: (obj, args) => {
       return clientModel.findOne({ login: args.login }, (error, client) => {
-        if (err) {
-          console.log("Error: " + err);
+        if (error) {
+          console.log("Error: " + error);
         }
         return client;
       });
