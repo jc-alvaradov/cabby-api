@@ -178,40 +178,33 @@ io.on("connection", function(socket) {
           }
         }
       },
-      (err, location) => {
+      (err, closeDrivers) => {
         if (err) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
-          return location;
+          // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
+          closeDrivers.forEach(driver => {
+            const msg = {
+              driverId: driver.driverId,
+              client
+            };
+            io.emit("DRIVER_RIDE_PROPOSAL", msg);
+            socket.on("DRIVER_RESPONSE", response => {
+              if (response === true) {
+                console.log("El conductor acepto el viaje!!!");
+                // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
+                // una accion al driver y client diciendoles q empiecen el viaje
+                // salimos de la funcion
+              } else {
+                // el conductor no acepto el viaje, continuamos con el otro conductor.
+                console.log("El conductor no acepto el viaje :( ");
+              }
+            });
+          });
         }
       }
     );
-
-    // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-    drivers.forEach(driver => {
-      const msg = {
-        driverId: driver.driverId,
-        client
-      };
-      io.emit("DRIVER_RIDE_PROPOSAL", msg);
-      socket.on("DRIVER_RESPONSE", response => {
-        if (response === true) {
-          console.log("El conductor acepto el viaje!!!");
-          // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
-          // una accion al driver y client diciendoles q empiecen el viaje
-          // salimos de la funcion
-        } else {
-          // el conductor no acepto el viaje, continuamos con el otro conductor.
-          console.log("El conductor no acepto el viaje :( ");
-        }
-      });
-    });
   });
-
-  /*
-  socket.on("chat message", function(msg) {
-    io.emit("chat message", msg);
-  });*/
 });
 
 mongoose.connect(process.env.BD, { useMongoClient: true }, () => {
