@@ -188,8 +188,7 @@ io.on("connection", function(socket) {
               driverId: driver.driverId,
               client
             };
-            io.emit("DRIVER_RIDE_PROPOSAL", msg);
-            socket.on("DRIVER_RESPONSE", response => {
+            io.emit("DRIVER_RIDE_PROPOSAL", msg, response => {
               console.log("El driver Respondio: " + response);
               if (response === true) {
                 console.log("El conductor acepto el viaje!!!");
@@ -202,6 +201,7 @@ io.on("connection", function(socket) {
               }
             });
           });
+          console.log("Ya emiti todos los mensajes");
         }
       }
     );
