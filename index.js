@@ -183,15 +183,14 @@ io.on("connection", function(socket) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
           // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-          console.log("Ya encontre conductores cercanos: " + closeDrivers);
           closeDrivers.forEach(driver => {
             const msg = {
               driverId: driver.driverId,
               client
             };
             io.emit("DRIVER_RIDE_PROPOSAL", msg);
-            console.log("Ya emiti la proposicion");
             socket.on("DRIVER_RESPONSE", response => {
+              console.log("El driver Respondio: " + response);
               if (response === true) {
                 console.log("El conductor acepto el viaje!!!");
                 // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
