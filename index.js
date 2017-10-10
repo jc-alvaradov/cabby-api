@@ -188,7 +188,7 @@ io.on("connection", function(socket) {
               driverId: driver.driverId,
               client
             };
-            socket.send("DRIVER_RIDE_PROPOSAL", msg, callback);
+            io.emit("DRIVER_RIDE_PROPOSAL", msg, callback);
           });
           console.log("Ya emiti todos los mensajes");
         }
