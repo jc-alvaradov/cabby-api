@@ -193,20 +193,20 @@ io.on("connection", function(socket) {
               "Y este es el socket id del qlo q queria cambiar: " +
                 driver.socketId
             );
-            io
-              .to(driver.socketId)
-              .emit("DRIVER_RIDE_PROPOSAL", msg, response => {
-                console.log("El driver Respondio: " + response);
-                if (response === true) {
-                  console.log("El conductor acepto el viaje!!!");
-                  // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
-                  // una accion al driver y client diciendoles q empiecen el viaje
-                  // salimos de la funcion
-                } else {
-                  // el conductor no acepto el viaje, continuamos con el otro conductor.
-                  console.log("El conductor no acepto el viaje :( ");
-                }
-              });
+            io.sockets.connected[
+              driver.socketId
+            ].emit("DRIVER_RIDE_PROPOSAL", msg, response => {
+              console.log("El driver Respondio: " + response);
+              if (response === true) {
+                console.log("El conductor acepto el viaje!!!");
+                // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
+                // una accion al driver y client diciendoles q empiecen el viaje
+                // salimos de la funcion
+              } else {
+                // el conductor no acepto el viaje, continuamos con el otro conductor.
+                console.log("El conductor no acepto el viaje :( ");
+              }
+            });
           });
           console.log("Ya emiti todos los mensajes");
         }
