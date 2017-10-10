@@ -158,7 +158,7 @@ io.on("connection", function(socket) {
     );
   });
 
-  socket.on("SEARCH_DRIVER", client => {
+  socket.on("SEARCH_DRIVER", function(client) {
     /**
      * primero buscamos los conductores mas cercanos a la pos de inicio del viaje
      */
@@ -178,17 +178,17 @@ io.on("connection", function(socket) {
           }
         }
       },
-      (err, closeDrivers) => {
+      function(err, closeDrivers) {
         if (err) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
           // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-          closeDrivers.forEach(driver => {
+          closeDrivers.forEach(function(driver) {
             const msg = {
               driverId: driver.driverId,
               client
             };
-            socket.emit("DRIVER_RIDE_PROPOSAL", msg, response => {
+            socket.emit("DRIVER_RIDE_PROPOSAL", msg, function(response) {
               console.log("El driver Respondio: " + response);
               if (response === true) {
                 console.log("El conductor acepto el viaje!!!");
