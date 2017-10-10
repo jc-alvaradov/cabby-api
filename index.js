@@ -126,6 +126,19 @@ app.get("/login/error", function(req, res) {
   res.end();
 });
 
+function driverResponse(response) {
+  console.log("El driver Respondio: " + response);
+  if (response === true) {
+    console.log("El conductor acepto el viaje!!!");
+    // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
+    // una accion al driver y client diciendoles q empiecen el viaje
+    // salimos de la funcion
+  } else {
+    // el conductor no acepto el viaje, continuamos con el otro conductor.
+    console.log("El conductor no acepto el viaje :( ");
+  }
+}
+
 io.on("connection", function(socket) {
   console.log("Socket connected: " + socket.id);
   socket.on("disconnect", function() {
@@ -158,7 +171,7 @@ io.on("connection", function(socket) {
     );
   });
 
-  socket.on("SEARCH_DRIVER", function(client) {
+  socket.on("SEARCH_DRIVER", client => {
     /**
      * primero buscamos los conductores mas cercanos a la pos de inicio del viaje
      */
@@ -178,17 +191,21 @@ io.on("connection", function(socket) {
           }
         }
       },
-      function(err, closeDrivers) {
+      (err, closeDrivers) => {
         if (err) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
           // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-          closeDrivers.forEach(function(driver) {
+          console.log("Porsia este es el socket: " + JSON.stringify(socket));
+          console.log(
+            "Largo de conductores cercanos... " + closeDrivers.length
+          );
+          closeDrivers.forEach(driver => {
             const msg = {
               driverId: driver.driverId,
               client
             };
-            io.emit("DRIVER_RIDE_PROPOSAL", msg, callback);
+            socket.emit("DRIVER_RIDE_PROPOSAL", msg, driverResponse);
           });
           console.log("Ya emiti todos los mensajes");
         }
@@ -196,19 +213,6 @@ io.on("connection", function(socket) {
     );
   });
 });
-
-function callback(response) {
-  console.log("El driver Respondio: " + response);
-  if (response === true) {
-    console.log("El conductor acepto el viaje!!!");
-    // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
-    // una accion al driver y client diciendoles q empiecen el viaje
-    // salimos de la funcion
-  } else {
-    // el conductor no acepto el viaje, continuamos con el otro conductor.
-    console.log("El conductor no acepto el viaje :( ");
-  }
-}
 
 mongoose.connect(process.env.BD, { useMongoClient: true }, () => {
   console.log("Conectado a la base de datos!");
