@@ -188,18 +188,7 @@ io.on("connection", function(socket) {
               driverId: driver.driverId,
               client
             };
-            socket.emit("DRIVER_RIDE_PROPOSAL", msg, function(response) {
-              console.log("El driver Respondio: " + response);
-              if (response === true) {
-                console.log("El conductor acepto el viaje!!!");
-                // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
-                // una accion al driver y client diciendoles q empiecen el viaje
-                // salimos de la funcion
-              } else {
-                // el conductor no acepto el viaje, continuamos con el otro conductor.
-                console.log("El conductor no acepto el viaje :( ");
-              }
-            });
+            socket.send("DRIVER_RIDE_PROPOSAL", msg, callback);
           });
           console.log("Ya emiti todos los mensajes");
         }
@@ -207,6 +196,19 @@ io.on("connection", function(socket) {
     );
   });
 });
+
+function callback(response) {
+  console.log("El driver Respondio: " + response);
+  if (response === true) {
+    console.log("El conductor acepto el viaje!!!");
+    // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
+    // una accion al driver y client diciendoles q empiecen el viaje
+    // salimos de la funcion
+  } else {
+    // el conductor no acepto el viaje, continuamos con el otro conductor.
+    console.log("El conductor no acepto el viaje :( ");
+  }
+}
 
 mongoose.connect(process.env.BD, { useMongoClient: true }, () => {
   console.log("Conectado a la base de datos!");
