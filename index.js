@@ -196,7 +196,6 @@ io.on("connection", function(socket) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
           // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-          console.log("Porsia este es el socket: " + JSON.stringify(socket));
           console.log(
             "Largo de conductores cercanos... " + closeDrivers.length
           );
