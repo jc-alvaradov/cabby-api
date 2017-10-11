@@ -64,6 +64,10 @@ const driverSchema = new mongoose.Schema({
   carModel: {
     type: mongoose.Schema.Types.String,
     required: true
+  },
+  carPhoto: {
+    type: mongoose.Schema.Types.String,
+    required: true
   }
 });
 

@@ -33,6 +33,7 @@ const typeDefs = `
     carPlate: String!
     carSeatCount: Int!
     carModel: String!
+    carPhoto: String!
   }
 
   type DriverPos {
@@ -120,6 +121,7 @@ const typeDefs = `
     carPlate: String!
     carSeatCount: Int!
     carModel: String!
+    carPhoto: String!
   }
 
   input DriverLocationInput {
@@ -180,6 +182,7 @@ const typeDefs = `
     active: String!
     carPlate: String!
     carModel: String!
+    carPhoto: String!
   }
 
   input ClientEditInput {
@@ -193,6 +196,7 @@ const typeDefs = `
 
   type Query {
     getDriver(driverName: String!): [Driver]
+    getDriverById(id: String!): Driver
     getDrivers(state: String!): [Driver]
     getClosestDrivers(clientPos: DriverLocationInput!): [DriverPos]
     getRide(name: String!): [Ride]

@@ -183,32 +183,28 @@ io.on("connection", function(socket) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
           // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-          closeDrivers.forEach(driver => {
-            const msg = {
-              driverId: driver.driverId,
-              client
-            };
-            console.log("A este men le mandare el mensajito: " + socket.id);
-            console.log(
-              "Y este es el socket id del qlo q queria cambiar: " +
-                driver.socketId
-            );
-            io.sockets.connected[
+          let driverFound = false;
+          closeDrivers.some(driver => {
+            // cons array.some, cuando se retorne true se deja de ejecutar el ciclo
+            // le hacemos una peticion de aceptar el viaje uno a uno de los conductores
+            return io.sockets.connected[
               driver.socketId
-            ].emit("DRIVER_RIDE_PROPOSAL", msg, response => {
-              console.log("El driver Respondio: " + response);
+            ].emit("DRIVER_RIDE_PROPOSAL", client, response => {
               if (response === true) {
-                console.log("El conductor acepto el viaje!!!");
-                // el conductor acepto el viaje, creamos un nuevo ride en la bd y despachamos
-                // una accion al driver y client diciendoles q empiecen el viaje
-                // salimos de la funcion
-              } else {
-                // el conductor no acepto el viaje, continuamos con el otro conductor.
-                console.log("El conductor no acepto el viaje :( ");
+                // el conductor acepto el viaje, le mandamos sus datos al cliente
+                io.sockets.connected[socket.id].emit(
+                  "DRIVER_FOUND",
+                  driver.driverId
+                );
+                driverFound = true;
+                return true;
               }
             });
           });
-          console.log("Ya emiti todos los mensajes");
+          // si llegamos hasta aca sin encontrar un conductor entonces le mandamos un mensaje de error al cliente
+          if (!driverFound) {
+            io.sockets.connected[socket.id].emit("DRIVER_NOT_FOUND");
+          }
         }
       }
     );

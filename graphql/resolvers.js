@@ -19,7 +19,19 @@ const resolvers = {
     getDriver: (obj, args) => {
       return driverModel.find(
         { driverName: new RegExp(args.driverName, "i") },
-        "_id driverName phone email earnings payment location rating photo carPlate carModel carColor active",
+        "_id driverName phone email earnings payment location rating photo carPlate carModel carColor carPhoto active",
+        (err, driver) => {
+          if (err) {
+            console.log("Error: " + err);
+          }
+          return driver;
+        }
+      );
+    },
+    getDriverById: (obj, args) => {
+      return driverModel.findOne(
+        { _id: args.id },
+        "_id driverName phone email earnings payment rating photo carPlate carModel carColor carPhoto active",
         (err, driver) => {
           if (err) {
             console.log("Error: " + err);
@@ -37,7 +49,7 @@ const resolvers = {
             if (err) {
               console.log("Error: " + err);
             }
-            return drivers;
+            return driver;
           }
         );
       } else {
