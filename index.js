@@ -187,11 +187,12 @@ io.on("connection", function(socket) {
           closeDrivers.some(driver => {
             // cons array.some, cuando se retorne true se deja de ejecutar el ciclo
             // le hacemos una peticion de aceptar el viaje uno a uno de los conductores
-            return io.sockets.connected[
+            io.sockets.connected[
               driver.socketId
             ].emit("DRIVER_RIDE_PROPOSAL", client, response => {
               if (response === true) {
                 // el conductor acepto el viaje, le mandamos sus datos al cliente
+                console.log("Conductor encontrado");
                 io.sockets.connected[socket.id].emit(
                   "DRIVER_FOUND",
                   driver.driverId
@@ -200,6 +201,7 @@ io.on("connection", function(socket) {
                 return true;
               }
             });
+            return driverFound;
           });
           // si llegamos hasta aca sin encontrar un conductor entonces le mandamos un mensaje de error al cliente
           if (!driverFound) {
