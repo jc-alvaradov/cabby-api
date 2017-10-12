@@ -139,8 +139,13 @@ function checkDriver(drivers, client, clientSocket) {
       );
       return true;
     } else {
-      //intentamos con otro conductor
-      checkDriver(drivers, client, clientSocket);
+      if (drivers.length > 0) {
+        //intentamos con otro conductor
+        checkDriver(drivers, client, clientSocket);
+      } else {
+        // ningun conductor disponible
+        io.sockets.connected[clientSocket.id].emit("DRIVER_NOT_FOUND");
+      }
     }
   });
 }
@@ -195,14 +200,11 @@ io.on("connection", function(socket) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
           // ahora recorremos el array de conductores cercanos buscando uno que quiera viajar
-
-          // llamar al primer objeto
-          checkDriver(closeDrivers, client, socket);
-
-          // si llegamos hasta aca sin encontrar un conductor entonces le mandamos un mensaje de error al cliente
-          /*if (!driverFound) {
+          if (closeDrivers.length > 0) {
+            checkDriver(closeDrivers, client, socket);
+          } else {
             io.sockets.connected[socket.id].emit("DRIVER_NOT_FOUND");
-          }*/
+          }
         }
       }
     );
