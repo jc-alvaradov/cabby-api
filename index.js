@@ -127,10 +127,8 @@ app.get("/login/error", function(req, res) {
 });
 
 io.on("connection", function(socket) {
-  console.log("Socket connected: " + socket.id);
   socket.on("disconnect", function() {
     // recibir todos los driverPos, revisar si su id es igual a alguna
-    console.log("Se desconecto: " + socket.id);
     const deleted = driverPosModel.findOneAndRemove(
       { socketId: socket.id },
       (err, res) => {
@@ -140,9 +138,6 @@ io.on("connection", function(socket) {
         return true;
       }
     );
-    if (deleted) {
-      console.log("Socket eliminado correctamente");
-    }
   });
 
   socket.on("UPDATE_DRIVER_POS", function(driver) {
@@ -159,9 +154,7 @@ io.on("connection", function(socket) {
   });
 
   socket.on("SEARCH_DRIVER", client => {
-    /**
-     * primero buscamos los conductores mas cercanos a la pos de inicio del viaje
-     */
+    // buscamos los conductores mas cercanos a la posicion de inicio del viaje
     const drivers = driverPosModel.find(
       {
         coordinate: {
@@ -178,7 +171,7 @@ io.on("connection", function(socket) {
           }
         }
       },
-      (err, closeDrivers) => {
+      async (err, closeDrivers) => {
         if (err) {
           console.log("Hubo un error buscando conductores cercanos: " + err);
         } else {
@@ -187,12 +180,11 @@ io.on("connection", function(socket) {
           closeDrivers.some(driver => {
             // cons array.some, cuando se retorne true se deja de ejecutar el ciclo
             // le hacemos una peticion de aceptar el viaje uno a uno de los conductores
-            io.sockets.connected[
+            await io.sockets.connected[
               driver.socketId
             ].emit("DRIVER_RIDE_PROPOSAL", client, response => {
               if (response === true) {
                 // el conductor acepto el viaje, le mandamos sus datos al cliente
-                console.log("Conductor encontrado");
                 io.sockets.connected[socket.id].emit(
                   "DRIVER_FOUND",
                   driver.driverId
