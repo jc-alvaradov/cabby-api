@@ -180,9 +180,9 @@ io.on("connection", function(socket) {
           closeDrivers.some(driver => {
             // cons array.some, cuando se retorne true se deja de ejecutar el ciclo
             // le hacemos una peticion de aceptar el viaje uno a uno de los conductores
-            await io.sockets.connected[
+            io.sockets.connected[
               driver.socketId
-            ].emit("DRIVER_RIDE_PROPOSAL", client, response => {
+            ].emit("DRIVER_RIDE_PROPOSAL", client, await response => {
               if (response === true) {
                 // el conductor acepto el viaje, le mandamos sus datos al cliente
                 io.sockets.connected[socket.id].emit(
