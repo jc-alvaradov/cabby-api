@@ -131,7 +131,7 @@ function checkDriver(drivers, client, clientSocket) {
   io.sockets.connected[
     driver.socketId
   ].emit("DRIVER_RIDE_PROPOSAL", client, response => {
-    if (response === true) {
+    if (response === true && io.sockets.connected[clientSocket.id]) {
       // el conductor acepto el viaje, le mandamos sus datos al cliente
       io.sockets.connected[clientSocket.id].emit(
         "DRIVER_FOUND",
