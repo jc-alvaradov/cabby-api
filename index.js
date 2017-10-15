@@ -2,7 +2,7 @@ require("dotenv").config();
 require("./auth");
 const app = require("express")();
 const http = require("http").Server(app);
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, { pingTimeout: 30000 });
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const passport = require("passport");
