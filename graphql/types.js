@@ -198,6 +198,7 @@ const typeDefs = `
     getDriver(driverName: String!): [Driver]
     getDriverById(id: String!): Driver
     getDrivers(state: String!): [Driver]
+    getDriverPos(id: String!): DriverPos
     getClosestDrivers(clientPos: DriverLocationInput!): [DriverPos]
     getRide(name: String!): [Ride]
     getRides(state: String!): [Ride]

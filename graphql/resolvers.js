@@ -40,6 +40,18 @@ const resolvers = {
         }
       );
     },
+    getDriverPos: (obj, args) => {
+      return driverPosModel.findOne(
+        { driverId: args.id },
+        "driverId socketId coordinate",
+        (err, driver) => {
+          if (err) {
+            console.log("Error: " + err);
+          }
+          return driver;
+        }
+      );
+    },
     getDrivers: (obj, args) => {
       if (args.state === "all") {
         return driverModel.find(
