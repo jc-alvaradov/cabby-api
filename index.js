@@ -128,26 +128,25 @@ app.get("/login/error", function(req, res) {
 
 function checkDriver(drivers, client, clientSocket) {
   const driver = drivers.shift();
-  io.sockets.connected[
-    driver.socketId
-  ].emit("DRIVER_RIDE_PROPOSAL", client, response => {
-    if (response === true && io.sockets.connected[clientSocket.id]) {
-      // el conductor acepto el viaje, le mandamos sus datos al cliente
-      io.sockets.connected[clientSocket.id].emit(
-        "DRIVER_FOUND",
-        driver.driverId
-      );
-      return true;
-    } else {
-      if (drivers.length > 0) {
-        //intentamos con otro conductor
-        checkDriver(drivers, client, clientSocket);
+  io.sockets.connected[driver.socketId].emit(
+    "DRIVER_RIDE_PROPOSAL",
+    client,
+    response => {
+      if (response === true && io.sockets.connected[clientSocket.id]) {
+        // el conductor acepto el viaje, le mandamos sus datos al cliente
+        io.sockets.connected[clientSocket.id].emit("DRIVER_FOUND", driver);
+        return true;
       } else {
-        // ningun conductor disponible
-        io.sockets.connected[clientSocket.id].emit("DRIVER_NOT_FOUND");
+        if (drivers.length > 0) {
+          //intentamos con otro conductor
+          checkDriver(drivers, client, clientSocket);
+        } else {
+          // ningun conductor disponible
+          io.sockets.connected[clientSocket.id].emit("DRIVER_NOT_FOUND");
+        }
       }
     }
-  });
+  );
 }
 
 io.on("connection", function(socket) {
