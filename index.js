@@ -128,9 +128,12 @@ app.get("/login/error", function(req, res) {
 
 function checkDriver(drivers, client, clientSocket) {
   const driver = drivers.shift();
-  io.sockets.connected[driver.socketId].emit(
+  JSON.stringify(client);
+  JSON.stringify(clientSocket);
+  const socketClient = Object.assign(client, clientSocket);
+io.sockets.connected[driver.socketId].emit(
     "DRIVER_RIDE_PROPOSAL",
-    { ...client, ...clientSocket },
+    socketClient,    
     response => {
       if (response === true && io.sockets.connected[clientSocket.id]) {
         // el conductor acepto el viaje, le mandamos sus datos al cliente
