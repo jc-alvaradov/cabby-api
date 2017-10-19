@@ -128,7 +128,7 @@ app.get("/login/error", function(req, res) {
 
 function checkDriver(drivers, client, clientSocket) {
   const driver = drivers.shift();
-  client.id = clientSocket.id;
+  client.socketId = clientSocket.id;
   io.sockets.connected[driver.socketId].emit(
     "DRIVER_RIDE_PROPOSAL",
     client,
