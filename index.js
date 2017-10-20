@@ -177,6 +177,10 @@ io.on("connection", function(socket) {
     );
   });
 
+  socket.on("CONFIRM_PICKUP", function(clientId) {
+    console.log("Se confirmo que recogieron a: " + clientId);
+  });
+
   socket.on("SEARCH_DRIVER", client => {
     // buscamos los conductores mas cercanos a la posicion de inicio del viaje
     const drivers = driverPosModel.find(
