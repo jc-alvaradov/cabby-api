@@ -178,7 +178,7 @@ io.on("connection", function(socket) {
   });
 
   socket.on("CONFIRM_PICKUP", function(clientId) {
-    console.log("Se confirmo que recogieron a: " + clientId);
+    io.sockets.connected[clientId].emit("CONFIRM_PICKUP");
   });
 
   socket.on("SEARCH_DRIVER", client => {
