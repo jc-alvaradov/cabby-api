@@ -89,6 +89,7 @@ const typeDefs = `
     avatar: String!
     clientName: String!
     phone: String!
+    photo: String!
     email: String!
     payment: String!
     rating: Float!

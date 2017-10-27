@@ -13,6 +13,10 @@ const clientSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.String,
     required: true
   },
+  photo: {
+    type: mongoose.Schema.Types.String,
+    required: true
+  },
   email: {
     type: mongoose.Schema.Types.String,
     required: true
