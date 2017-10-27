@@ -129,25 +129,29 @@ app.get("/login/error", function(req, res) {
 function checkDriver(drivers, client, clientSocket) {
   const driver = drivers.shift();
   client.socketId = clientSocket.id;
-  io.sockets.connected[driver.socketId].emit(
-    "DRIVER_RIDE_PROPOSAL",
-    client,
-    response => {
-      if (response === true && io.sockets.connected[clientSocket.id]) {
-        // el conductor acepto el viaje, le mandamos sus datos al cliente
-        io.sockets.connected[clientSocket.id].emit("DRIVER_FOUND", driver);
-        return true;
-      } else {
-        if (drivers.length > 0) {
-          //intentamos con otro conductor
-          checkDriver(drivers, client, clientSocket);
+  if (io.sockets.connected[driver.socketId]) {
+    io.sockets.connected[driver.socketId].emit(
+      "DRIVER_RIDE_PROPOSAL",
+      client,
+      response => {
+        if (response === true && io.sockets.connected[clientSocket.id]) {
+          // el conductor acepto el viaje, le mandamos sus datos al cliente
+          io.sockets.connected[clientSocket.id].emit("DRIVER_FOUND", driver);
+          return true;
         } else {
-          // ningun conductor disponible
-          io.sockets.connected[clientSocket.id].emit("DRIVER_NOT_FOUND");
+          if (drivers.length > 0) {
+            //intentamos con otro conductor
+            checkDriver(drivers, client, clientSocket);
+          } else {
+            // ningun conductor disponible
+            if (io.sockets.connected[clientSocket.id]) {
+              io.sockets.connected[clientSocket.id].emit("DRIVER_NOT_FOUND");
+            }
+          }
         }
       }
-    }
-  );
+    );
+  }
 }
 
 io.on("connection", function(socket) {
@@ -178,11 +182,15 @@ io.on("connection", function(socket) {
   });
 
   socket.on("CONFIRM_PICKUP", function(clientId) {
-    io.sockets.connected[clientId].emit("CONFIRM_PICKUP");
+    if (io.sockets.connected[clientId]) {
+      io.sockets.connected[clientId].emit("CONFIRM_PICKUP");
+    }
   });
 
   socket.on("FINISH_RIDE", function(clientId) {
-    io.sockets.connected[clientId].emit("FINISH_RIDE");
+    if (io.sockets.connected[clientId]) {
+      io.sockets.connected[clientId].emit("FINISH_RIDE");
+    }
   });
 
   socket.on("SEARCH_DRIVER", client => {
@@ -211,7 +219,9 @@ io.on("connection", function(socket) {
           if (closeDrivers.length > 0) {
             checkDriver(closeDrivers, client, socket);
           } else {
-            io.sockets.connected[socket.id].emit("DRIVER_NOT_FOUND");
+            if (io.sockets.connected[socket.id]) {
+              io.sockets.connected[socket.id].emit("DRIVER_NOT_FOUND");
+            }
           }
         }
       }

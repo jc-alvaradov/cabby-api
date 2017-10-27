@@ -9,18 +9,10 @@ const ratingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.String,
     required: true
   },
-  from: {
-    type: mongoose.Schema.Types.String,
-    required: false
-  },
-  to: {
-    type: mongoose.Schema.Types.String,
-    required: false
-  },
   message: {
     type: mongoose.Schema.Types.String,
     trim: true,
-    required: true
+    required: false
   },
   rating: {
     type: mongoose.Schema.Types.String,

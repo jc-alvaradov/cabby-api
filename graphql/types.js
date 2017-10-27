@@ -57,13 +57,13 @@ const typeDefs = `
 
   type Rating {
     _id: String
-    fromId: String!
-    toId: String!
-    from: String!
-    to: String!
+    fromId: String
+    toId: String
+    from: String
+    to: String
     message: String
     rating: String!
-    date: String!
+    date: String
   }
 
   input RatingInput {
