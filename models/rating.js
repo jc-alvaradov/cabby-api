@@ -11,11 +11,11 @@ const ratingSchema = new mongoose.Schema({
   },
   from: {
     type: mongoose.Schema.Types.String,
-    required: true
+    required: false
   },
   to: {
     type: mongoose.Schema.Types.String,
-    required: true
+    required: false
   },
   message: {
     type: mongoose.Schema.Types.String,

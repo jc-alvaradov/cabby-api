@@ -158,8 +158,8 @@ const resolvers = {
     },
     getClient: (obj, args) => {
       return clientModel.find(
-        { clientName: new RegExp(args.clientName, "i") },
-        "_id clientName active phone email rating payment",
+        { login: args.login },
+        "_id login clientName active phone photo email rating payment",
         (err, client) => {
           if (err) {
             console.log("Error: " + err);
@@ -262,7 +262,7 @@ const resolvers = {
     addClient: async (obj, args) => {
       const newClientModel = new clientModel(args.client);
       const newClient = await newClientModel.save();
-      return newClient ? true : false;
+      return newClient;
     },
     editClient: async (obj, args) => {
       const client = await clientModel.update(
@@ -307,6 +307,19 @@ const resolvers = {
         }
       );
       return driver ? true : false;
+    },
+    editRating: async (obj, args) => {
+      const rating = await ratingModel.update(
+        { _id: args.rating._id },
+        { $set: args.rating },
+        (err, res) => {
+          if (err) {
+            console.log("Error: " + err);
+          }
+          return true;
+        }
+      );
+      return rating ? true : false;
     },
     deleteDriver: (obj, args) => {
       return driverModel.findOneAndRemove({ _id: args.id }, (err, res) => {

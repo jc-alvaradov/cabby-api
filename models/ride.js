@@ -36,10 +36,6 @@ const rideSchema = new mongoose.Schema({
   amount: {
     type: mongoose.Schema.Types.String,
     required: true
-  },
-  rating: {
-    type: mongoose.Schema.Types.Number,
-    required: false
   }
 });
 

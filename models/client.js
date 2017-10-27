@@ -5,10 +5,6 @@ const clientSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.String,
     required: true
   },
-  login: {
-    type: mongoose.Schema.Types.String,
-    required: true
-  },
   location: {
     type: mongoose.Schema.Types.String,
     required: false
@@ -35,10 +31,6 @@ const clientSchema = new mongoose.Schema({
   },
   rating: {
     type: mongoose.Schema.Types.Number,
-    required: false
-  },
-  allRatings: {
-    type: mongoose.Schema.Types.Array,
     required: false
   },
   active: {

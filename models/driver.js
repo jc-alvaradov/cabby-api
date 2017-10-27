@@ -37,10 +37,6 @@ const driverSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Number,
     required: true
   },
-  allRatings: {
-    type: mongoose.Schema.Types.Array,
-    required: true
-  },
   photo: {
     type: mongoose.Schema.Types.String,
     required: true

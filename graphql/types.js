@@ -10,7 +10,6 @@ const typeDefs = `
     login: String
     payment: String!
     rating: Float
-    allRatings: [Float]
     photo: String
     active: String!
   }
@@ -26,7 +25,6 @@ const typeDefs = `
     earnings: String!
     payment: String!
     rating: Float!
-    allRatings: [Float]!
     photo: String!
     active: String!
     carColor: String!
@@ -69,11 +67,8 @@ const typeDefs = `
   }
 
   input RatingInput {
-    _id: String
     fromId: String!
     toId: String!
-    from: String!
-    to: String!
     message: String
     rating: String!
   }
@@ -99,7 +94,6 @@ const typeDefs = `
     rating: Float!
     active: String!
     location: LocationInput
-    allRatings: [Float]
     password: String
   }
 
@@ -114,7 +108,6 @@ const typeDefs = `
     earnings: String!
     payment: String!
     rating: Float!
-    allRatings: [Float]!
     photo: String!
     active: String!
     carColor: String!
@@ -202,7 +195,7 @@ const typeDefs = `
     getClosestDrivers(clientPos: DriverLocationInput!): [DriverPos]
     getRide(name: String!): [Ride]
     getRides(state: String!): [Ride]
-    getClient(clientName: String!): [Client]
+    getClient(id: String!): [Client]
     getClients(state: String!): [Client]
     getClientRides(id: String!): [Ride]
     getRating(name: String!): [Rating]
@@ -211,7 +204,7 @@ const typeDefs = `
   }
 
   type Mutation {
-    addClient(client: ClientInput!): Boolean
+    addClient(client: ClientInput!): Client
     addDriver(driver: DriverInput!): Boolean
     addActiveDriver(driverPos: DriverPosInput!) : Boolean
     addRide(ride: RideInput!): Boolean
@@ -219,6 +212,7 @@ const typeDefs = `
     editClient(client: ClientEditInput!): Boolean
     editDriver(driver: DriverEditInput!): Boolean
     editRide(ride: RideEditInput!): Boolean
+    editRating(rating: RatingInput!): Boolean
     deleteClient(id: String!): Boolean
     deleteDriver(id: String!): Boolean
     deleteActiveDriver(socketId: String!) : Boolean
