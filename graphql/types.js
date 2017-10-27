@@ -201,7 +201,6 @@ const typeDefs = `
     getClientRides(id: String!): [Ride]
     getRating(name: String!): [Rating]
     getRatings(filter: String!): [Rating]
-    userExists(login: String!): Boolean
   }
 
   type Mutation {

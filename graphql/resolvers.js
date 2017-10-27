@@ -8,14 +8,6 @@ const ratingModel = require("../models/rating");
 
 const resolvers = {
   Query: {
-    userExists: (obj, args) => {
-      return clientModel.findOne({ login: args.login }, (error, client) => {
-        if (error) {
-          console.log("Error: " + error);
-        }
-        return client != null ? true : false;
-      });
-    },
     getDriver: (obj, args) => {
       return driverModel.find(
         { driverName: new RegExp(args.driverName, "i") },
@@ -157,7 +149,7 @@ const resolvers = {
       }
     },
     getClient: (obj, args) => {
-      return clientModel.find(
+      return clientModel.findOne(
         { login: args.login },
         "_id login clientName active phone photo email rating payment",
         (err, client) => {
