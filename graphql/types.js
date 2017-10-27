@@ -86,7 +86,6 @@ const typeDefs = `
   input ClientInput {
     _id: String
     login: String!
-    avatar: String!
     clientName: String!
     phone: String!
     photo: String!
