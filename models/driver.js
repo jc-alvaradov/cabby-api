@@ -27,7 +27,8 @@ const driverSchema = new mongoose.Schema({
   },
   login: {
     type: mongoose.Schema.Types.String,
-    required: false
+    required: false,
+    unique: true
   },
   payment: {
     type: mongoose.Schema.Types.String,
