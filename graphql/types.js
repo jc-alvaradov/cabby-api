@@ -195,7 +195,7 @@ const typeDefs = `
     getClosestDrivers(clientPos: DriverLocationInput!): [DriverPos]
     getRide(name: String!): [Ride]
     getRides(state: String!): [Ride]
-    getClient(id: String!): [Client]
+    getClient(login: String!): [Client]
     getClients(state: String!): [Client]
     getClientRides(id: String!): [Ride]
     getRating(name: String!): [Rating]
