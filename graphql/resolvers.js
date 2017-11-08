@@ -96,7 +96,7 @@ const resolvers = {
     },
     getClientRides: (obj, args) => {
       return rideModel.find(
-        { login: args.login },
+        { clientId: args.id },
         "_id amount driverName clientName startLocation destination rideState cancelReason rating",
         (err, rides) => {
           if (err) {
