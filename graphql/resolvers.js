@@ -361,6 +361,9 @@ const resolvers = {
     addRating: async (obj, args) => {
       const newRatingModel = new ratingModel(args.rating);
       const newRating = await newRatingModel.save();
+      // 1)encontrar el conductor o cliente al que se le esta haciendo el rating
+      // 2) obtener su rating actual
+      // 3) actualizar su rating
       return newRating ? true : false;
     },
     deleteRating: (obj, args) => {

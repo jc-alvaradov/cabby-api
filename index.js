@@ -151,6 +151,17 @@ function checkDriver(drivers, client, clientSocket) {
         }
       }
     );
+  } else {
+    // el conductor no esta conectado, intentamos con otro conductor
+    if (drivers.length > 0) {
+      //intentamos con otro conductor
+      checkDriver(drivers, client, clientSocket);
+    } else {
+      // ningun conductor disponible
+      if (io.sockets.connected[clientSocket.id]) {
+        io.sockets.connected[clientSocket.id].emit("DRIVER_NOT_FOUND");
+      }
+    }
   }
 }
 
@@ -184,12 +195,16 @@ io.on("connection", function(socket) {
   socket.on("CONFIRM_PICKUP", function(clientId) {
     if (io.sockets.connected[clientId]) {
       io.sockets.connected[clientId].emit("CONFIRM_PICKUP");
+    } else {
+      // emitir mensaje avisando al driver q el cliente de desconecto
     }
   });
 
   socket.on("FINISH_RIDE", function(clientId) {
     if (io.sockets.connected[clientId]) {
       io.sockets.connected[clientId].emit("FINISH_RIDE");
+    } else {
+      // avisar al driver que el cliente se desconecto
     }
   });
 

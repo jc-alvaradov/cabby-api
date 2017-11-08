@@ -197,7 +197,7 @@ const typeDefs = `
     getRides(state: String!): [Ride]
     getClient(login: String!): Client
     getClients(state: String!): [Client]
-    getClientRides(id: String!): [Ride]
+    getClientRides(login: String!): [Ride]
     getRating(name: String!): [Rating]
     getRatings(filter: String!): [Rating]
   }
