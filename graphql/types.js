@@ -59,8 +59,6 @@ const typeDefs = `
     _id: String
     fromId: String
     toId: String
-    from: String
-    to: String
     message: String
     rating: String!
     date: String

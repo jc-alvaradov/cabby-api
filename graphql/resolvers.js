@@ -210,7 +210,7 @@ const resolvers = {
             { toId: new RegExp(args.id, "i") }
           ]
         },
-        "_id rating from to message date",
+        "_id rating from to fromPhoto toPhoto message date",
         (err, ratings) => {
           if (err) {
             console.log("Error: " + err);
