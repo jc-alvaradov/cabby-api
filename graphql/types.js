@@ -200,6 +200,7 @@ const typeDefs = `
     getClientRides(id: String!): [Ride]
     getRating(name: String!): [Rating]
     getRatings(filter: String!): [Rating]
+    getClientRatings(id: String!): [Rating]
   }
 
   type Mutation {

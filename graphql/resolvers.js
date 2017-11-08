@@ -202,6 +202,23 @@ const resolvers = {
         }
       );
     },
+    getClientRatings: (obj, args) => {
+      return ratingModel.find(
+        {
+          $or: [
+            { fromId: new RegExp(args.id, "i") },
+            { toId: new RegExp(args.id, "i") }
+          ]
+        },
+        "_id rating from to message date",
+        (err, ratings) => {
+          if (err) {
+            console.log("Error: " + err);
+          }
+          return ratings;
+        }
+      );
+    },
     getRatings: (obj, args) => {
       if (args.filter == "all") {
         return ratingModel.find(
