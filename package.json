@@ -4,7 +4,7 @@
   "description": "Backend for taxi-native's client, driver and dashboard",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "jc-alvaradov",
@@ -21,7 +21,7 @@
     "express-session": "^1.15.4",
     "graphql": "^0.10.3",
     "graphql-tools": "^1.1.0",
-    "mongoose": "^4.11.2",
+    "mongoose": "^4.13.6",
     "morgan": "^1.8.2",
     "node-uuid": "^1.4.8",
     "passport": "^0.3.2",
