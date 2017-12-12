@@ -244,9 +244,19 @@ io.on("connection", function(socket) {
   });
 });
 
-mongoose.connect(process.env.BD, { useMongoClient: true }, () => {
-  console.log("Conectado a la base de datos!");
-});
+mongoose.connect(process.env.BD, 
+  {
+    keepAlive: 300000,
+    connectTimeoutMS: 30000,
+    autoReconnect: true,
+    reconnectTries: 300000,
+    reconnectInterval: 5000,
+    useMongoClient: true
+  }, 
+  () => {
+    console.log("Conectado a la base de datos!");
+  }
+);
 
 http.listen(port, () => {
   console.log("Conectado exitosamente al servidor");
